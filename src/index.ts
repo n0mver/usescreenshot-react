@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import html2canvas, { Options } from "html2canvas";
 
-const useScreenshot = () => {
+export const useScreenshot = (type?:string, quality?:number) => {
     const [image, setImage] = useState<string>();
     const [isLoading, setIsLoading] = useState(false);
     const [isError, setIsError] = useState(false);
@@ -17,7 +17,7 @@ const useScreenshot = () => {
             setIsLoading(true);
             setIsError(false)
             const canvas = await html2canvas(captureRef, options);
-            const base64Image = canvas.toDataURL("image/png");
+            const base64Image = canvas.toDataURL(type, quality);
             setImage(base64Image);
             return base64Image;
         } catch (error) {
@@ -38,4 +38,11 @@ const useScreenshot = () => {
         clear,
     };
 };
-export default useScreenshot;
+
+export const createFileName = (extension: string, name?: string): string => {
+    if (!name) {
+        return `${Date.now()}.${extension}`;
+    }
+    return `${name}.${extension}`;
+}
+
