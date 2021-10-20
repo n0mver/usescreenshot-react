@@ -1,46 +1,74 @@
-# Getting Started with Create React App
+# Install
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Using npm
+```bash
+npm install --save usescreenshot-react
+``` 
 
-## Available Scripts
+# Usage 
 
-In the project directory, you can run:
+```tsx
+import React, {useRef} from "react";
+import {useScreenshot} from 'usescreenshot-react';
 
-### `yarn start`
+const Example = () => {
+    const {image, takeScreenshot, isLoading, isError} = useScreenshot();
+    const ref = useRef<HTMLDivElement>(null)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+    return isLoading ? (
+        <div>Loading...</div>
+    ) : (
+        <div>
+            {isError && <p>Error</p>}
+            <div ref={ref}/>
+            <h1>Capture Me</h1>
+            {image && <img src={image} alt={'Screenshot'}/>}
+            <button onClick={() => takeScreenshot(ref.current)}>Take screenshot</button>
+        </div>
+    );
+}
+```
+or
+```tsx
+import React, {useRef} from "react";
+import {useScreenshot} from 'usescreenshot-react';
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+const Example = () => {
+    const {takeScreenshot, isLoading, isError} = useScreenshot();
+    const ref = useRef<HTMLDivElement>(null)
+    const getImage = () => {
+        takeScreenshot(ref.current, {
+            backgroundColor: null,
+            logging: false,
+            scale: 2
+        }).then(image => console.log(image));
+    }
 
-### `yarn test`
+    return isLoading ? (
+        <div>Loading...</div>
+    ) : (
+        <div>
+            {isError && <p>Error</p>}
+            <div ref={ref}>
+                <h1>Capture Me</h1>
+            </div>
+            <button onClick={getImage}>Take screenshot</button>
+        </div>
+    );
+}
+```
+## API
+### `useScreenshot`
+The use `useScreenshot` hook returns an object containing the following properties:
+- `image: string | undefined` - Screenshot in base64 format
+- `takeScreenshot = (captureRef: HTMLElement | null, options?: Partial<Options> | undefined) => Promise<string | undefined>;` - Function for creating screenshot from html node and return screenshot
+- `isLoading: boolean` - Indicates if the screenshot is loading
+- `isError: boolean` - Indicates whether an error occurred during screenshot loading
+- `clear = ():void` - Clear screenshot string
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### `takeScreenshot(captureRef: HTMLElement | null, options?: Partial<Options>)`
+- `captureRef` - Ref to the HTMLElement for which to for which the screenshot should be taken
+- `options` - configuration [html2canvas options](https://html2canvas.hertzen.com/configuration) to take a screenshot.
 
-### `yarn build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+## License
+MIT
