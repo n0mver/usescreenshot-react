@@ -1,7 +1,7 @@
-import { useCallback, useState } from "react";
-import html2canvas, { Options } from "html2canvas";
+import {useCallback, useState} from "react";
+import html2canvas, {Options} from "html2canvas";
 
-export const useScreenshot = (type?:string, quality?:number) => {
+export const useScreenshot = (type?: string, quality?: number) => {
     const [image, setImage] = useState<string>();
     const [isLoading, setIsLoading] = useState(false);
     const [isError, setIsError] = useState(false);

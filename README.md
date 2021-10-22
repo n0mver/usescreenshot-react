@@ -1,3 +1,7 @@
+# usescreenshot-react
+
+*React hook allows you to take screenshots of webpages or parts of it*
+
 # Install
 
 Using npm
