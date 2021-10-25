@@ -10,19 +10,19 @@ export const useScreenshot = (type?: string, quality?: number) => {
         captureRef: HTMLElement | null,
         options?: Partial<Options>
     ) => {
-        if (!captureRef) {
-            throw new Error('You should provide correct html node.')
-        }
         try {
+            if (!captureRef) {
+                throw new Error("You should provide correct html node");
+            }
             setIsLoading(true);
             setIsError(false)
             const canvas = await html2canvas(captureRef, options);
             const base64Image = canvas.toDataURL(type, quality);
             setImage(base64Image);
             return base64Image;
-        } catch (error) {
+        } catch ({message}) {
             setIsError(true)
-            console.log(error)
+            console.log(message)
         } finally {
             setIsLoading(false);
         }
