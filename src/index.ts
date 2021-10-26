@@ -1,4 +1,4 @@
-import {useCallback, useState} from "react";
+import {useState} from "react";
 import html2canvas, {Options} from "html2canvas";
 
 export const useScreenshot = (type?: string, quality?: number) => {
@@ -7,9 +7,9 @@ export const useScreenshot = (type?: string, quality?: number) => {
     const [isError, setIsError] = useState(false);
 
     const takeScreenshot = async (
-        captureRef: HTMLElement | null,
+        captureRef: HTMLElement,
         options?: Partial<Options>
-    ) => {
+    ): Promise<string> => {
         try {
             if (!captureRef) {
                 throw new Error("You should provide correct html node");
@@ -20,15 +20,15 @@ export const useScreenshot = (type?: string, quality?: number) => {
             const base64Image = canvas.toDataURL(type, quality);
             setImage(base64Image);
             return base64Image;
-        } catch ({message}) {
+        } catch (error) {
             setIsError(true)
-            console.log(message)
+            return Promise.reject((error as Error).message);
         } finally {
             setIsLoading(false);
         }
     };
 
-    const clear = useCallback(() => setImage(undefined), []);
+    const clear = () => setImage(undefined);
 
     return {
         image,

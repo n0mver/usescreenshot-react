@@ -13,13 +13,16 @@ describe('checking create file name', () => {
 describe('useScreenshot hook', () => {
     test('throw an error if node is null', async () => {
         const {
-            result, rerender
+            result
         } = renderHook(() => useScreenshot())
 
         await act(async () => {
-            await result.current.takeScreenshot(null)
+            try {
+                await result.current.takeScreenshot(null as unknown as HTMLElement)
+            } catch (error) {
+                expect(error).toEqual('You should provide correct html node')
+            }
         })
-
         expect(result.current.isError).toEqual(true)
     })
 })
