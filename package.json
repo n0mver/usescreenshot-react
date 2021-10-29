@@ -1,6 +1,6 @@
 {
   "name": "usescreenshot-react",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "React hook allows you to take screenshots of webpages or parts of it",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
@@ -33,7 +33,8 @@
   "scripts": {
     "test": "react-scripts test",
     "build": "rollup -c",
-    "start": "rollup -c -w"
+    "start": "rollup -c -w",
+    "build:example": "npm install && npm run build && cd example && npm install && npm run build"
   },
   "files": [
     "dist"

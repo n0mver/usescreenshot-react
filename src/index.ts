@@ -6,8 +6,8 @@ export const useScreenshot = (type?: string, quality?: number) => {
     const [isLoading, setIsLoading] = useState(false);
     const [isError, setIsError] = useState(false);
 
-    const takeScreenshot = async (
-        captureRef: HTMLElement,
+    const takeScreenshot = async <T extends HTMLElement = HTMLElement>(
+        captureRef: T,
         options?: Partial<Options>
     ): Promise<string> => {
         try {

@@ -1,28 +1,26 @@
 import React, {useRef} from 'react';
 import {createFileName, useScreenshot} from "usescreenshot-react";
-
 import logo from './img/logo192.png';
 import Text from "./components/Text";
 import {saveAs} from 'file-saver';
 
 const App = () => {
-    const ref = useRef<HTMLDivElement>(null)
+    const ref = useRef<HTMLDivElement>(null);
     const {image, isLoading, isError, takeScreenshot, clear} = useScreenshot();
     const getImage = () => {
         if (!ref.current) {
-            return
+            return;
         }
-        takeScreenshot(ref.current, {backgroundColor: null, logging: false})
-            .catch(console.log)
+        takeScreenshot(ref.current, {backgroundColor: null, logging: false});
     }
     const getImageAndDownload = () => {
         if (!ref.current) {
             return
         }
-        takeScreenshot(ref.current, {backgroundColor: null, logging: false}).then(img => {
-            saveAs(img, createFileName('png', 'example'))
+        takeScreenshot<HTMLDivElement>(ref.current, {backgroundColor: null, logging: false}).then(img => {
+            saveAs(img, createFileName('png', 'example'));
         })
-            .catch(console.log)
+            .catch(console.log);
     }
     return (
         isLoading ? (
